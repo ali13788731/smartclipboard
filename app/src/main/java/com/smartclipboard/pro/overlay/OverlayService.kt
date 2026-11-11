@@ -139,7 +139,7 @@ class OverlayService : Service(), OverlayActions {
         if (t.isBlank() || t == lastText) return
         lastText = t
         text = t
-        setMode(OverlayMode.SMART)
+        changeMode(OverlayMode.SMART)
     }
 
     private fun writeClip(t: String) {
@@ -150,7 +150,7 @@ class OverlayService : Service(), OverlayActions {
 
     // ---------- Window / modes ----------
 
-    private fun setMode(m: OverlayMode) {
+    private fun changeMode(m: OverlayMode) {
         handler.removeCallbacks(peekRunnable)
         mode = m
         applyMode()
@@ -234,11 +234,11 @@ class OverlayService : Service(), OverlayActions {
         if (mode == OverlayMode.BUBBLE) scheduleSnapAndPeek()
     }
 
-    override fun openSmart() = setMode(OverlayMode.SMART)
-    override fun openEditor() = setMode(OverlayMode.EDITOR)
-    override fun minimize() = setMode(OverlayMode.BUBBLE)
+    override fun openSmart() = changeMode(OverlayMode.SMART)
+    override fun openEditor() = changeMode(OverlayMode.EDITOR)
+    override fun minimize() = changeMode(OverlayMode.BUBBLE)
     override fun close() { stopSelf() }
-    override fun cancelEdit() = setMode(OverlayMode.SMART)
+    override fun cancelEdit() = changeMode(OverlayMode.SMART)
 
     override fun copy(t: String) {
         writeClip(t)
@@ -248,7 +248,7 @@ class OverlayService : Service(), OverlayActions {
     override fun confirm(t: String) {
         writeClip(t)
         text = t
-        setMode(OverlayMode.SMART)
+        changeMode(OverlayMode.SMART)
         Toast.makeText(this, "متن ویرایش‌شده در کلیپ‌بورد قرار گرفت ✓", Toast.LENGTH_SHORT).show()
     }
 
